@@ -1,6 +1,10 @@
 # Sensitive Configuration Files
-.env
+.env*
 .env.backup
+.env.local
+.env.production
+.env.development
+*.env
 
 # Bot Data Files
 data/
@@ -64,3 +68,16 @@ debug_*
 # Windows
 ehthumbs.db
 Desktop.ini
+
+# Security - Token/Key Files
+*token*
+*key*
+*secret*
+config_token.bat
+upload_*fix*
+pterodactyl_commands*
+
+# Deployment specific
+heroku.yml
+docker-compose.yml
+Dockerfile.prod
