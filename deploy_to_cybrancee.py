@@ -99,7 +99,7 @@ class CybranceeDeployer:
         # Ensure data directories are created in main.py
         main_py_path = os.path.join(self.project_root, 'main.py')
         
-        with open(main_py_path, 'r') as f:
+        with open(main_py_path, 'r', encoding='utf-8') as f:
             content = f.read()
             
         if 'os.makedirs' not in content:
