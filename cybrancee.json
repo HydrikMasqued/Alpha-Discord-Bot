@@ -1,0 +1,28 @@
+{
+  "name": "alpha-discord-bot",
+  "platform": "cybrancee",
+  "runtime": "python-3.11.6",
+  "buildpacks": [
+    "python"
+  ],
+  "environment_variables": {
+    "BOT_TOKEN": "your_discord_bot_token_here",
+    "BOT_PREFIX": "!",
+    "ANNOUNCEMENT_CHANNEL_ID": "0"
+  },
+  "processes": {
+    "web": "python main.py"
+  },
+  "required_addons": [],
+  "optional_addons": [
+    "postgresql",
+    "redis"
+  ],
+  "scaling": {
+    "web": {
+      "min_instances": 1,
+      "max_instances": 1,
+      "memory": "512MB"
+    }
+  }
+}
