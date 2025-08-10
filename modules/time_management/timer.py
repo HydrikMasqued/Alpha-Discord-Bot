@@ -295,58 +295,213 @@ class TimeManagement(commands.Cog):
         
         await interaction.response.send_message(embed=embed, ephemeral=True)
     
-    @app_commands.command(name="list-timezones", description="List common timezones")
-    async def list_timezones(self, interaction: discord.Interaction):
-        """Show list of common timezones"""
+    @app_commands.command(name="list-timezones", description="Browse all available timezones by region")
+    @app_commands.describe(region="Filter by region (optional)")
+    @app_commands.choices(region=[
+        app_commands.Choice(name="🇺🇸 North America", value="north_america"),
+        app_commands.Choice(name="🇲🇽 Central/South America", value="south_america"),
+        app_commands.Choice(name="🇬🇧 Europe/UK", value="europe"),
+        app_commands.Choice(name="🇯🇵 Asia/Pacific", value="asia_pacific"),
+        app_commands.Choice(name="🌍 Africa/Middle East", value="africa_middle_east"),
+        app_commands.Choice(name="🌊 Oceania/Islands", value="oceania"),
+        app_commands.Choice(name="⏰ UTC/GMT", value="utc")
+    ])
+    async def list_timezones(self, interaction: discord.Interaction, region: str = None):
+        """Show comprehensive list of timezones by region"""
         
-        common_timezones = {
-            "🇺🇸 Americas": [
-                "America/New_York (Eastern)",
-                "America/Chicago (Central)", 
-                "America/Denver (Mountain)",
-                "America/Los_Angeles (Pacific)",
-                "America/Toronto",
-                "America/Vancouver"
-            ],
-            "🇪🇺 Europe": [
-                "Europe/London (GMT)",
-                "Europe/Paris (CET)",
-                "Europe/Berlin (CET)",
-                "Europe/Rome (CET)",
-                "Europe/Madrid (CET)",
-                "Europe/Moscow (MSK)"
-            ],
-            "🌏 Asia/Pacific": [
-                "Asia/Tokyo (JST)",
-                "Asia/Seoul (KST)",
-                "Asia/Shanghai (CST)",
-                "Asia/Hong_Kong",
-                "Asia/Singapore",
-                "Australia/Sydney"
-            ],
-            "🌍 Other": [
-                "UTC (Coordinated Universal Time)",
-                "GMT (Greenwich Mean Time)",
-                "EST (Eastern Standard Time)",
-                "PST (Pacific Standard Time)"
-            ]
+        all_timezones = {
+            "north_america": {
+                "title": "🇺🇸 North America",
+                "zones": [
+                    "America/New_York - Eastern Time (US & Canada)",
+                    "America/Chicago - Central Time (US & Canada)",
+                    "America/Denver - Mountain Time (US & Canada)", 
+                    "America/Phoenix - Arizona (No DST)",
+                    "America/Los_Angeles - Pacific Time (US & Canada)",
+                    "America/Anchorage - Alaska Time",
+                    "Pacific/Honolulu - Hawaii Time",
+                    "America/Toronto - Eastern Canada",
+                    "America/Vancouver - Pacific Canada",
+                    "America/Montreal - Eastern Canada",
+                    "America/Winnipeg - Central Canada",
+                    "America/Edmonton - Mountain Canada",
+                    "America/Halifax - Atlantic Canada",
+                    "America/St_Johns - Newfoundland"
+                ]
+            },
+            "south_america": {
+                "title": "🇲🇽 Central & South America",
+                "zones": [
+                    "America/Mexico_City - Mexico Central",
+                    "America/Tijuana - Mexico Pacific",
+                    "America/Cancun - Mexico Eastern",
+                    "America/Guatemala - Guatemala",
+                    "America/Costa_Rica - Costa Rica",
+                    "America/Panama - Panama",
+                    "America/Bogota - Colombia",
+                    "America/Caracas - Venezuela",
+                    "America/Lima - Peru",
+                    "America/La_Paz - Bolivia",
+                    "America/Santiago - Chile",
+                    "America/Argentina/Buenos_Aires - Argentina",
+                    "America/Sao_Paulo - Brazil (São Paulo)",
+                    "America/Brasilia - Brazil (Brasília)",
+                    "America/Manaus - Brazil (Amazonas)"
+                ]
+            },
+            "europe": {
+                "title": "🇬🇧 Europe & UK",
+                "zones": [
+                    "Europe/London - United Kingdom (GMT/BST)",
+                    "Europe/Dublin - Ireland",
+                    "Europe/Paris - France (CET)",
+                    "Europe/Berlin - Germany (CET)",
+                    "Europe/Amsterdam - Netherlands (CET)",
+                    "Europe/Brussels - Belgium (CET)",
+                    "Europe/Madrid - Spain (CET)",
+                    "Europe/Rome - Italy (CET)",
+                    "Europe/Vienna - Austria (CET)",
+                    "Europe/Zurich - Switzerland (CET)",
+                    "Europe/Stockholm - Sweden (CET)",
+                    "Europe/Oslo - Norway (CET)",
+                    "Europe/Copenhagen - Denmark (CET)",
+                    "Europe/Warsaw - Poland (CET)",
+                    "Europe/Prague - Czech Republic (CET)",
+                    "Europe/Budapest - Hungary (CET)",
+                    "Europe/Athens - Greece (EET)",
+                    "Europe/Helsinki - Finland (EET)",
+                    "Europe/Moscow - Russia (MSK)",
+                    "Europe/Kiev - Ukraine (EET)",
+                    "Europe/Istanbul - Turkey (TRT)"
+                ]
+            },
+            "asia_pacific": {
+                "title": "🇯🇵 Asia & Pacific",
+                "zones": [
+                    "Asia/Tokyo - Japan (JST)",
+                    "Asia/Seoul - South Korea (KST)",
+                    "Asia/Shanghai - China (CST)",
+                    "Asia/Hong_Kong - Hong Kong",
+                    "Asia/Taipei - Taiwan",
+                    "Asia/Singapore - Singapore",
+                    "Asia/Manila - Philippines",
+                    "Asia/Jakarta - Indonesia (Western)",
+                    "Asia/Bangkok - Thailand",
+                    "Asia/Ho_Chi_Minh - Vietnam",
+                    "Asia/Kuala_Lumpur - Malaysia",
+                    "Asia/Kolkata - India (IST)",
+                    "Asia/Karachi - Pakistan",
+                    "Asia/Dhaka - Bangladesh",
+                    "Asia/Kathmandu - Nepal",
+                    "Asia/Colombo - Sri Lanka",
+                    "Asia/Almaty - Kazakhstan",
+                    "Asia/Tashkent - Uzbekistan"
+                ]
+            },
+            "africa_middle_east": {
+                "title": "🌍 Africa & Middle East",
+                "zones": [
+                    "Africa/Cairo - Egypt",
+                    "Africa/Lagos - Nigeria (West Africa)",
+                    "Africa/Johannesburg - South Africa",
+                    "Africa/Nairobi - Kenya (East Africa)",
+                    "Africa/Casablanca - Morocco",
+                    "Africa/Tunis - Tunisia",
+                    "Africa/Algiers - Algeria",
+                    "Asia/Dubai - UAE",
+                    "Asia/Riyadh - Saudi Arabia",
+                    "Asia/Qatar - Qatar",
+                    "Asia/Kuwait - Kuwait",
+                    "Asia/Baghdad - Iraq",
+                    "Asia/Tehran - Iran",
+                    "Asia/Jerusalem - Israel",
+                    "Asia/Beirut - Lebanon",
+                    "Asia/Damascus - Syria"
+                ]
+            },
+            "oceania": {
+                "title": "🌊 Oceania & Islands",
+                "zones": [
+                    "Australia/Sydney - Australia Eastern",
+                    "Australia/Melbourne - Australia Eastern",
+                    "Australia/Brisbane - Australia Eastern (No DST)",
+                    "Australia/Adelaide - Australia Central",
+                    "Australia/Perth - Australia Western",
+                    "Australia/Darwin - Australia Central (No DST)",
+                    "Pacific/Auckland - New Zealand",
+                    "Pacific/Fiji - Fiji",
+                    "Pacific/Guam - Guam",
+                    "Pacific/Tahiti - French Polynesia",
+                    "Pacific/Marquesas - Marquesas Islands",
+                    "Pacific/Galapagos - Galapagos Islands",
+                    "Pacific/Easter - Easter Island"
+                ]
+            },
+            "utc": {
+                "title": "⏰ UTC & Standard Times", 
+                "zones": [
+                    "UTC - Coordinated Universal Time",
+                    "GMT - Greenwich Mean Time", 
+                    "EST - Eastern Standard Time",
+                    "CST - Central Standard Time",
+                    "MST - Mountain Standard Time",
+                    "PST - Pacific Standard Time",
+                    "CET - Central European Time",
+                    "EET - Eastern European Time",
+                    "JST - Japan Standard Time",
+                    "IST - India Standard Time",
+                    "AEST - Australian Eastern Standard Time"
+                ]
+            }
         }
         
-        embed = discord.Embed(
-            title="🌍 Common Timezones",
-            description="Use `/set-timezone <timezone>` to set your timezone",
-            color=Config.COLORS['info']
+        if region and region in all_timezones:
+            # Show specific region
+            region_data = all_timezones[region]
+            embed = discord.Embed(
+                title=f"{region_data['title']} Timezones",
+                description="Copy and paste the timezone name (before the dash) into `/set-timezone`",
+                color=Config.COLORS['info']
+            )
+            
+            # Split zones into chunks of 10 for readability
+            zones = region_data['zones']
+            for i in range(0, len(zones), 10):
+                chunk = zones[i:i+10]
+                field_name = f"Timezones {i//10 + 1}" if len(zones) > 10 else "Available Timezones"
+                embed.add_field(
+                    name=field_name,
+                    value="\n".join([f"`{tz}`" for tz in chunk]),
+                    inline=False
+                )
+                
+        else:
+            # Show all regions overview
+            embed = discord.Embed(
+                title="🌍 All Timezone Regions",
+                description="Choose a region to see detailed timezone list, or use the command with a region filter.",
+                color=Config.COLORS['info']
+            )
+            
+            for region_key, region_data in all_timezones.items():
+                zone_count = len(region_data['zones'])
+                embed.add_field(
+                    name=region_data['title'],
+                    value=f"{zone_count} timezones available\nUse `/list-timezones region:{region_key}`",
+                    inline=True
+                )
+        
+        embed.add_field(
+            name="💡 How to Use",
+            value="1. Find your timezone in the list\n"
+                  "2. Copy the name before the dash (e.g., `America/New_York`)\n"
+                  "3. Use `/set-timezone America/New_York`\n"
+                  "4. Then use `/mytimezone` to see your time!",
+            inline=False
         )
         
-        for region, timezones in common_timezones.items():
-            embed.add_field(
-                name=region,
-                value="\n".join([f"`{tz}`" for tz in timezones]),
-                inline=True
-            )
-        
-        embed.set_footer(text="For a complete list, visit: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones")
-        await interaction.response.send_message(embed=embed)
+        embed.set_footer(text="Need help? The timezone name is always the part before the ' - ' dash")
+        await interaction.response.send_message(embed=embed, ephemeral=True)
     
     # CLOCK IN/OUT SYSTEM
     @app_commands.command(name="clockin", description="Clock in to start a work session")
