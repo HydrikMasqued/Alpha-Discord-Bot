@@ -19,7 +19,17 @@ class TimeManagement(commands.Cog):
         self.active_sessions = {}  # user_id: session_data
         self.timezone_db = {}  # user_id: timezone_string
         self.load_timezone_data()
+        # Don't start the task here - it will be started when the cog is loaded
+    
+    async def cog_load(self):
+        """Called when the cog is loaded - start the background task"""
         self.check_clockin_timeout.start()
+        logging.info("TimeManagement cog loaded and clock timeout task started")
+    
+    async def cog_unload(self):
+        """Called when the cog is unloaded - stop the background task"""
+        self.check_clockin_timeout.cancel()
+        logging.info("TimeManagement cog unloaded and clock timeout task stopped")
     
     def load_timezone_data(self):
         """Load timezone preferences from file"""
