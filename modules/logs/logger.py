@@ -118,14 +118,14 @@ class LogsModule(commands.Cog):
             # Success response
             embed = EmbedBuilder.success_embed(
                 "🎉 Logging Setup Complete",
-                f"**Category:** {log_category.mention}\\n\\n" +
-                "\\n".join(created_channels) +
-                "\\n\\n**Features Enabled:**\\n" +
-                "• Message logging (edit, delete, bulk delete)\\n" +
-                "• Member logging (join, leave, nickname changes)\\n" +
-                "• Voice logging (join, leave, channel moves)\\n" +
-                "• Moderation logging (kicks, bans, timeouts)\\n" +
-                "• Server logging (channel/role changes)\\n\\n" +
+                f"**Category:** {log_category.mention}\n\n" +
+                "\n".join(created_channels) +
+                "\n\n**Features Enabled:**\n" +
+                "• Message logging (edit, delete, bulk delete)\n" +
+                "• Member logging (join, leave, nickname changes)\n" +
+                "• Voice logging (join, leave, channel moves)\n" +
+                "• Moderation logging (kicks, bans, timeouts)\n" +
+                "• Server logging (channel/role changes)\n\n" +
                 "All server activity will now be logged automatically!"
             )
             
@@ -152,7 +152,7 @@ class LogsModule(commands.Cog):
         if guild_id not in self.log_channels or not self.log_channels[guild_id]:
             embed = EmbedBuilder.warning_embed(
                 "⚠️ Logging Not Configured",
-                "Logging is not set up for this server.\\n\\nUse `/setup-logs` to configure automatic logging."
+                "Logging is not set up for this server.\n\nUse `/setup-logs` to configure automatic logging."
             )
         else:
             # Check channel status
@@ -166,11 +166,11 @@ class LogsModule(commands.Cog):
             
             embed = EmbedBuilder.info_embed(
                 "📋 Logging Status",
-                "\\n".join(status_lines)
+                "\n".join(status_lines)
             )
             embed.add_field(
                 name="Active Features",
-                value="• Message logging\\n• Member activity\\n• Voice activity\\n• Moderation actions\\n• Server changes",
+                value="• Message logging\n• Member activity\n• Voice activity\n• Moderation actions\n• Server changes",
                 inline=False
             )
         
@@ -219,15 +219,15 @@ class LogsModule(commands.Cog):
         
         embed = self.create_log_embed(
             "🗑️ Message Deleted",
-            f"**Channel:** {message.channel.mention}\\n"
-            f"**Content:** {message.content[:1000] if message.content else '*No content*'}\\n"
+            f"**Channel:** {message.channel.mention}\n"
+            f"**Content:** {message.content[:1000] if message.content else '*No content*'}\n"
             f"**Message ID:** {message.id}",
             Config.COLORS['error'],
             message.author
         )
         
         if message.attachments:
-            attachments = "\\n".join([f"• {att.filename}" for att in message.attachments])
+            attachments = "\n".join([f"• {att.filename}" for att in message.attachments])
             embed.add_field(name="Attachments", value=attachments, inline=False)
         
         await self.log_to_channel(message.guild, 'message_logs', embed)
@@ -240,8 +240,8 @@ class LogsModule(commands.Cog):
         
         embed = self.create_log_embed(
             "✏️ Message Edited",
-            f"**Channel:** {before.channel.mention}\\n"
-            f"**Message ID:** {before.id}\\n"
+            f"**Channel:** {before.channel.mention}\n"
+            f"**Message ID:** {before.id}\n"
             f"**[Jump to Message]({after.jump_url})**",
             Config.COLORS['warning'],
             before.author
@@ -285,7 +285,7 @@ class LogsModule(commands.Cog):
         if authors:
             embed.add_field(
                 name="Users Affected",
-                value="\\n".join(list(authors)[:10]) + (f"\\n... and {len(authors) - 10} more" if len(authors) > 10 else ""),
+                value="\n".join(list(authors)[:10]) + (f"\n... and {len(authors) - 10} more" if len(authors) > 10 else ""),
                 inline=False
             )
         
@@ -297,7 +297,7 @@ class LogsModule(commands.Cog):
         """Log member joins"""
         embed = self.create_log_embed(
             "📥 Member Joined",
-            f"**Account Created:** <t:{int(member.created_at.timestamp())}:R>\\n"
+            f"**Account Created:** <t:{int(member.created_at.timestamp())}:R>\n"
             f"**Member #{len(member.guild.members)}**",
             Config.COLORS['success'],
             member
@@ -310,7 +310,7 @@ class LogsModule(commands.Cog):
         """Log member leaves"""
         embed = self.create_log_embed(
             "📤 Member Left",
-            f"**Joined Server:** <t:{int(member.joined_at.timestamp())}:R>\\n"
+            f"**Joined Server:** <t:{int(member.joined_at.timestamp())}:R>\n"
             f"**Roles:** {', '.join([role.name for role in member.roles[1:]]) or 'None'}",
             Config.COLORS['error'],
             member
@@ -327,7 +327,7 @@ class LogsModule(commands.Cog):
         if before.nick != after.nick:
             embed = self.create_log_embed(
                 "🏷️ Nickname Changed",
-                f"**Before:** {before.nick or before.name}\\n"
+                f"**Before:** {before.nick or before.name}\n"
                 f"**After:** {after.nick or after.name}",
                 Config.COLORS['info'],
                 after
@@ -347,7 +347,7 @@ class LogsModule(commands.Cog):
                 
                 embed = self.create_log_embed(
                     "🎭 Roles Updated",
-                    "\\n".join(description_parts),
+                    "\n".join(description_parts),
                     Config.COLORS['info'],
                     after
                 )
@@ -368,7 +368,7 @@ class LogsModule(commands.Cog):
             # Joined voice channel
             embed = self.create_log_embed(
                 "🔊 Voice Join",
-                f"**Channel:** {after.channel.name}\\n"
+                f"**Channel:** {after.channel.name}\n"
                 f"**Category:** {after.channel.category.name if after.channel.category else 'None'}",
                 Config.COLORS['success'],
                 member
@@ -378,7 +378,7 @@ class LogsModule(commands.Cog):
             # Left voice channel
             embed = self.create_log_embed(
                 "🔇 Voice Leave",
-                f"**Channel:** {before.channel.name}\\n"
+                f"**Channel:** {before.channel.name}\n"
                 f"**Category:** {before.channel.category.name if before.channel.category else 'None'}",
                 Config.COLORS['error'],
                 member
@@ -388,7 +388,7 @@ class LogsModule(commands.Cog):
             # Moved between channels
             embed = self.create_log_embed(
                 "🔄 Voice Move",
-                f"**From:** {before.channel.name}\\n"
+                f"**From:** {before.channel.name}\n"
                 f"**To:** {after.channel.name}",
                 Config.COLORS['info'],
                 member
@@ -410,7 +410,7 @@ class LogsModule(commands.Cog):
         
         embed = discord.Embed(
             title="🔨 Member Banned",
-            description=f"**User:** {user.mention}\\n"
+            description=f"**User:** {user.mention}\n"
                        f"**Reason:** {reason}",
             color=Config.COLORS['error'],
             timestamp=datetime.utcnow()
@@ -442,8 +442,8 @@ class LogsModule(commands.Cog):
         """Log channel creation"""
         embed = discord.Embed(
             title="📝 Channel Created",
-            description=f"**Channel:** {channel.mention}\\n"
-                       f"**Type:** {str(channel.type).title()}\\n"
+            description=f"**Channel:** {channel.mention}\n"
+                       f"**Type:** {str(channel.type).title()}\n"
                        f"**Category:** {channel.category.name if channel.category else 'None'}",
             color=Config.COLORS['success'],
             timestamp=datetime.utcnow()
@@ -457,8 +457,8 @@ class LogsModule(commands.Cog):
         """Log channel deletion"""
         embed = discord.Embed(
             title="🗑️ Channel Deleted",
-            description=f"**Channel:** #{channel.name}\\n"
-                       f"**Type:** {str(channel.type).title()}\\n"
+            description=f"**Channel:** #{channel.name}\n"
+                       f"**Type:** {str(channel.type).title()}\n"
                        f"**Category:** {channel.category.name if channel.category else 'None'}",
             color=Config.COLORS['error'],
             timestamp=datetime.utcnow()
@@ -472,9 +472,9 @@ class LogsModule(commands.Cog):
         """Log role creation"""
         embed = discord.Embed(
             title="🎭 Role Created",
-            description=f"**Role:** {role.mention}\\n"
-                       f"**Color:** {str(role.color)}\\n"
-                       f"**Hoisted:** {'Yes' if role.hoist else 'No'}\\n"
+            description=f"**Role:** {role.mention}\n"
+                       f"**Color:** {str(role.color)}\n"
+                       f"**Hoisted:** {'Yes' if role.hoist else 'No'}\n"
                        f"**Mentionable:** {'Yes' if role.mentionable else 'No'}",
             color=Config.COLORS['success'],
             timestamp=datetime.utcnow()
@@ -488,8 +488,8 @@ class LogsModule(commands.Cog):
         """Log role deletion"""
         embed = discord.Embed(
             title="🗑️ Role Deleted",
-            description=f"**Role:** {role.name}\\n"
-                       f"**Color:** {str(role.color)}\\n"
+            description=f"**Role:** {role.name}\n"
+                       f"**Color:** {str(role.color)}\n"
                        f"**Members:** {len(role.members)}",
             color=Config.COLORS['error'],
             timestamp=datetime.utcnow()

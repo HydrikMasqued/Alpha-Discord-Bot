@@ -58,7 +58,7 @@ class TimeManagement(commands.Cog):
             
             success_embed = EmbedBuilder.success_embed(
                 "Timezone Set",
-                f"Your timezone has been set to **{timezone}**\\n"
+                f"Your timezone has been set to **{timezone}**\n"
                 f"Current time: **{current_time}**"
             )
             await interaction.response.send_message(embed=success_embed, ephemeral=True)
@@ -66,8 +66,8 @@ class TimeManagement(commands.Cog):
         except pytz.exceptions.UnknownTimeZoneError:
             error_embed = EmbedBuilder.error_embed(
                 "Invalid Timezone",
-                f"'{timezone}' is not a valid timezone.\\n"
-                "Examples: `America/New_York`, `Europe/London`, `Asia/Tokyo`\\n"
+                f"'{timezone}' is not a valid timezone.\n"
+                "Examples: `America/New_York`, `Europe/London`, `Asia/Tokyo`\n"
                 "Use `/list-timezones` to see common timezones."
             )
             await interaction.response.send_message(embed=error_embed, ephemeral=True)
@@ -124,8 +124,8 @@ class TimeManagement(commands.Cog):
                     
                     embed = EmbedBuilder.info_embed(
                         "⏰ Time Conversion",
-                        f"**Original:** {time_to_convert} ({user_tz_name or 'UTC'})\\n"
-                        f"**Converted:** {converted_time.strftime('%Y-%m-%d %H:%M:%S %Z')}\\n"
+                        f"**Original:** {time_to_convert} ({user_tz_name or 'UTC'})\n"
+                        f"**Converted:** {converted_time.strftime('%Y-%m-%d %H:%M:%S %Z')}\n"
                         f"**Timezone:** {target_timezone}"
                     )
                     
@@ -133,7 +133,7 @@ class TimeManagement(commands.Cog):
                     await interaction.response.send_message(
                         embed=EmbedBuilder.error_embed(
                             "Invalid Time Format",
-                            "Please use format: `HH:MM` or `YYYY-MM-DD HH:MM`\\nExample: `14:30` or `2024-12-25 14:30`"
+                            "Please use format: `HH:MM` or `YYYY-MM-DD HH:MM`\nExample: `14:30` or `2024-12-25 14:30`"
                         ),
                         ephemeral=True
                     )
@@ -229,7 +229,7 @@ class TimeManagement(commands.Cog):
         for region, timezones in common_timezones.items():
             embed.add_field(
                 name=region,
-                value="\\n".join([f"`{tz}`" for tz in timezones]),
+                value="\n".join([f"`{tz}`" for tz in timezones]),
                 inline=True
             )
         
@@ -251,7 +251,7 @@ class TimeManagement(commands.Cog):
             await interaction.response.send_message(
                 embed=EmbedBuilder.warning_embed(
                     "Already Clocked In",
-                    f"You're already clocked in since {start_time.strftime('%H:%M:%S')}\\n"
+                    f"You're already clocked in since {start_time.strftime('%H:%M:%S')}\n"
                     f"Use `/clockout` to end your current session."
                 ),
                 ephemeral=True
@@ -281,8 +281,8 @@ class TimeManagement(commands.Cog):
         # Create embed
         embed = EmbedBuilder.success_embed(
             "🕐 Clocked In",
-            f"**Time:** {clock_time.strftime('%H:%M:%S %Z')}\\n"
-            f"**Date:** {clock_time.strftime('%Y-%m-%d')}\\n\\n"
+            f"**Time:** {clock_time.strftime('%H:%M:%S %Z')}\n"
+            f"**Date:** {clock_time.strftime('%Y-%m-%d')}\n\n"
             f"You'll be reminded after 30 minutes if you're still clocked in."
         )
         
@@ -326,9 +326,9 @@ class TimeManagement(commands.Cog):
         # Create embed
         embed = EmbedBuilder.success_embed(
             "🕐 Clocked Out",
-            f"**Clock In:** {start_time.strftime('%H:%M:%S')}\\n"
-            f"**Clock Out:** {end_time.strftime('%H:%M:%S')}\\n"
-            f"**Duration:** {hours}h {minutes}m {seconds}s\\n"
+            f"**Clock In:** {start_time.strftime('%H:%M:%S')}\n"
+            f"**Clock Out:** {end_time.strftime('%H:%M:%S')}\n"
+            f"**Duration:** {hours}h {minutes}m {seconds}s\n"
             f"**Date:** {end_time.strftime('%Y-%m-%d %Z')}"
         )
         
@@ -343,7 +343,7 @@ class TimeManagement(commands.Cog):
         if user_id not in self.active_sessions:
             embed = EmbedBuilder.info_embed(
                 "🕐 Clock Status",
-                "You are currently **not clocked in**.\\n\\nUse `/clockin` to start a work session."
+                "You are currently **not clocked in**.\n\nUse `/clockin` to start a work session."
             )
         else:
             session = self.active_sessions[user_id]
@@ -360,9 +360,9 @@ class TimeManagement(commands.Cog):
             
             embed = EmbedBuilder.info_embed(
                 "🕐 Clock Status",
-                f"You are currently **clocked in**.\\n\\n"
-                f"**Started:** {start_time.strftime('%H:%M:%S')}\\n"
-                f"**Duration:** {hours}h {minutes}m {seconds}s\\n"
+                f"You are currently **clocked in**.\n\n"
+                f"**Started:** {start_time.strftime('%H:%M:%S')}\n"
+                f"**Duration:** {hours}h {minutes}m {seconds}s\n"
                 f"**Timezone:** {session['timezone']}"
             )
         
@@ -382,9 +382,9 @@ class TimeManagement(commands.Cog):
                     # Create reminder embed
                     embed = EmbedBuilder.warning_embed(
                         "⏰ Clock Out Reminder",
-                        f"You've been clocked in for 30 minutes!\\n\\n"
-                        f"React with {Config.EMOJIS['tick']} to continue working\\n"
-                        f"React with {Config.EMOJIS['cross']} to clock out now\\n\\n"
+                        f"You've been clocked in for 30 minutes!\n\n"
+                        f"React with {Config.EMOJIS['tick']} to continue working\n"
+                        f"React with {Config.EMOJIS['cross']} to clock out now\n\n"
                         f"If you don't respond, you'll be automatically clocked out."
                     )
                     
@@ -450,7 +450,7 @@ class TimeManagement(commands.Cog):
                         await message.edit(
                             embed=EmbedBuilder.success_embed(
                                 "🕐 Clocked Out",
-                                f"You have been clocked out.\\n"
+                                f"You have been clocked out.\n"
                                 f"Total session: {hours}h {minutes}m"
                             )
                         )
@@ -471,7 +471,7 @@ class TimeManagement(commands.Cog):
                     await message.edit(
                         embed=EmbedBuilder.warning_embed(
                             "⏰ Auto Clocked Out",
-                            f"You've been automatically clocked out due to inactivity.\\n"
+                            f"You've been automatically clocked out due to inactivity.\n"
                             f"Total session: {hours}h {minutes}m"
                         )
                     )
