@@ -1,3 +1,6 @@
+PTERODACTYL CONSOLE COMMAND - Copy and paste this into your Pterodactyl console:
+
+cat > version.py << 'EOF'
 """
 Alpha Discord Bot Version Information
 Pterodactyl Panel Compatible Version
@@ -49,3 +52,4 @@ def get_deployment_info():
         "commands_count": "17+",
         "deployment_type": "24/7 Hosting"
     }
+EOF
