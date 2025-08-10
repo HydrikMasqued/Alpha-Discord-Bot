@@ -26,7 +26,7 @@ class Config:
     }
     
     # Timer Settings
-    CLOCKIN_TIMEOUT = 30 * 60  # 30 minutes in seconds
+    CLOCKIN_TIMEOUT = 5  # 5 seconds for testing (normally 30 * 60 for 30 minutes)
     
     # Embed Colors
     COLORS = {
