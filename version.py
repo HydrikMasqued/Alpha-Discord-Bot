@@ -3,7 +3,7 @@ Alpha Discord Bot Version Information
 Pterodactyl Panel Compatible Version
 """
 
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 __author__ = "AI Assistant"
 __description__ = "Professional Discord Management Solution"
 __platform__ = "Pterodactyl Panel"
@@ -18,6 +18,19 @@ VERSION_HISTORY = {
             "Discord Management Module (announcements, messaging, role management)",
             "Time Management Module (timezone support, clock in/out system)",
             "Comprehensive Logging Module (all server activities)",
+            "Professional UI with slash commands",
+            "Smart user lookup without pinging",
+            "Modular architecture for easy feature additions"
+        ]
+    },
+    "1.0.1": {
+        "date": "2025-08-10",
+        "description": "Enhanced privacy with ephemeral commands",
+        "features": [
+            "All slash commands now private to user (ephemeral)",
+            "Discord Management Module (announcements, messaging, role management)",
+            "Time Management Module (timezone support, clock in/out system)",
+            "Comprehensive Logging Module (all server activities)", 
             "Professional UI with slash commands",
             "Smart user lookup without pinging",
             "Modular architecture for easy feature additions"

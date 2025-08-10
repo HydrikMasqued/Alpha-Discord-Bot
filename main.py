@@ -53,7 +53,7 @@ class AlphaBot(commands.Bot):
         await self.change_presence(
             activity=discord.Activity(
                 type=discord.ActivityType.watching,
-                name="over the server | /help"
+                name="over the server | Slash Commands Only"
             )
         )
         

@@ -87,7 +87,7 @@ class BotInfo(commands.Cog):
             icon_url=self.bot.user.display_avatar.url if self.bot.user else None
         )
         
-        await interaction.response.send_message(embed=embed)
+        await interaction.response.send_message(embed=embed, ephemeral=True)
 
     @app_commands.command(name="info", description="Show detailed bot information and statistics")
     async def show_info(self, interaction: discord.Interaction):
@@ -167,7 +167,7 @@ class BotInfo(commands.Cog):
             icon_url=self.bot.user.display_avatar.url if self.bot.user else None
         )
         
-        await interaction.response.send_message(embed=embed)
+        await interaction.response.send_message(embed=embed, ephemeral=True)
 
     @app_commands.command(name="version", description="Show version information and recent changes")
     async def version_info(self, interaction: discord.Interaction):
@@ -232,7 +232,7 @@ class BotInfo(commands.Cog):
             icon_url=self.bot.user.display_avatar.url if self.bot.user else None
         )
         
-        await interaction.response.send_message(embed=embed)
+        await interaction.response.send_message(embed=embed, ephemeral=True)
 
     @app_commands.command(name="ping", description="Check bot latency and response time")
     async def ping(self, interaction: discord.Interaction):
@@ -257,7 +257,7 @@ class BotInfo(commands.Cog):
             inline=True
         )
         
-        await interaction.response.send_message(embed=embed)
+        await interaction.response.send_message(embed=embed, ephemeral=True)
 
 async def setup(bot):
     await bot.add_cog(BotInfo(bot))

@@ -388,7 +388,7 @@ class TimeManagement(commands.Cog):
                 
                 embed.set_footer(text="Use /set-timezone to set your default timezone")
             
-            await interaction.response.send_message(embed=embed)
+            await interaction.response.send_message(embed=embed, ephemeral=True)
             
         except pytz.exceptions.UnknownTimeZoneError:
             await interaction.response.send_message(
@@ -769,7 +769,7 @@ class TimeManagement(commands.Cog):
             f"You'll be reminded after 30 minutes if you're still clocked in."
         )
         
-        await interaction.response.send_message(embed=embed)
+        await interaction.response.send_message(embed=embed, ephemeral=True)
     
     @app_commands.command(name="clockout", description="Clock out to end your work session")
     async def clock_out(self, interaction: discord.Interaction):
@@ -815,7 +815,7 @@ class TimeManagement(commands.Cog):
             f"**Date:** {end_time.strftime('%Y-%m-%d %Z')}"
         )
         
-        await interaction.response.send_message(embed=embed)
+        await interaction.response.send_message(embed=embed, ephemeral=True)
     
     @app_commands.command(name="status", description="Check your current clock status")
     async def clock_status(self, interaction: discord.Interaction):

@@ -150,6 +150,34 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and
 
 ---
 
+## [1.0.1] - 2025-08-10
+
+### 🔧 Enhanced User Privacy
+
+#### ✨ Command Privacy Improvements
+- **[DONE]** Made all slash commands ephemeral (private to user who runs them)
+- **[DONE]** Removed !help command functionality (slash commands only)
+- **[DONE]** Updated bot status message to reflect slash-command-only operation
+- **[DONE]** Enhanced user experience by preventing command spam in public channels
+
+#### 🎯 Commands Now Private
+- **Time Management**: `/set-timezone`, `/time`, `/mytimezone`, `/list-timezones`, `/clockin`, `/clockout`, `/status` 
+- **Bot Information**: `/help`, `/info`, `/version`, `/ping`
+- **Server Logging**: `/setup-logs`, `/log-status`
+- **Management Confirmations**: All error messages and confirmations from `/dm`, `/mass-dm`, `/add-role`, `/remove-role`
+
+#### 📢 Public Commands Maintained
+- **Announcements**: `/announce` posts remain public (as intended)
+- **Logging Output**: All automatic logging continues to designated channels
+- **Clock Reminders**: 30-minute timeout notifications remain public for visibility
+
+### 🔄 Technical Changes
+- Added `ephemeral=True` parameter to appropriate interaction responses
+- Updated main.py bot status from "over the server | /help" to "over the server | Slash Commands Only"
+- Maintained existing functionality while improving privacy
+
+---
+
 ## 📋 Development Notes
 
 ### Architecture Decisions
@@ -170,6 +198,6 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and
 ---
 
 **Last Updated**: 2025-08-10  
-**Version**: 1.0.0  
+**Version**: 1.0.1  
 **Developer**: AI Assistant  
 **Status**: Production Ready ✅
