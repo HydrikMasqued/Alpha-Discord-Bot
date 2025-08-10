@@ -1,0 +1,6 @@
+discord.py>=2.3.0
+python-dotenv>=1.0.0
+pytz>=2023.3
+fuzzywuzzy>=0.18.0
+python-Levenshtein>=0.21.1
+asyncio
