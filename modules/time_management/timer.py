@@ -194,17 +194,28 @@ class TimeManagement(commands.Cog):
             # No timezone set - show UTC and suggest setting timezone
             utc_time = datetime.now(pytz.UTC)
             
-            embed = EmbedBuilder.warning_embed(
-                "⏰ No Timezone Set",
-                f"**Current UTC Time:** {utc_time.strftime('%H:%M:%S')}\n"
-                f"**UTC Date:** {utc_time.strftime('%Y-%m-%d')}\n\n"
-                f"🌍 **Set your timezone** using `/set-timezone` to see your local time!\n\n"
-                f"**Examples:**\n"
-                f"• `/set-timezone America/New_York` (Eastern Time)\n"
-                f"• `/set-timezone Europe/London` (GMT/BST)\n"
-                f"• `/set-timezone Asia/Tokyo` (Japan Time)"
+            embed = discord.Embed(
+                title="⏰ Your Timezone Info",
+                description="You haven't set your timezone yet!",
+                color=Config.COLORS['warning']
             )
-            embed.set_footer(text="Use /list-timezones to see common timezone options")
+            
+            embed.add_field(
+                name="Current UTC Time",
+                value=f"{utc_time.strftime('%I:%M:%S %p')} UTC\n{utc_time.strftime('%A, %B %d, %Y')}",
+                inline=False
+            )
+            
+            embed.add_field(
+                name="How to Set Your Timezone",
+                value="Use `/set-timezone` followed by your timezone:\n\n"
+                      "🇺🇸 `/set-timezone America/New_York`\n"
+                      "🇬🇧 `/set-timezone Europe/London`\n"
+                      "🇯🇵 `/set-timezone Asia/Tokyo`\n\n"
+                      "Use `/list-timezones` to see more options!",
+                inline=False
+            )
+            
         else:
             try:
                 # Get user's timezone and current time
@@ -221,57 +232,62 @@ class TimeManagement(commands.Cog):
                 else:
                     formatted_offset = tz_offset
                 
+                # Create a cleaner timezone display name
+                timezone_display = user_tz_name.replace('_', ' ').replace('/', ' → ')
+                
                 embed = discord.Embed(
-                    title="🌍 Your Timezone",
+                    title="🌍 Your Current Time",
                     color=Config.COLORS['success']
                 )
                 
+                # Main time display - large and prominent
                 embed.add_field(
-                    name="🕐 Current Time",
-                    value=f"**{local_time.strftime('%H:%M:%S')}**",
-                    inline=True
-                )
-                embed.add_field(
-                    name="📅 Date",
-                    value=f"**{local_time.strftime('%Y-%m-%d')}**",
-                    inline=True
-                )
-                embed.add_field(
-                    name="🌐 Timezone",
-                    value=f"**{user_tz_name}**",
+                    name="🕐 Right Now",
+                    value=f"# {local_time.strftime('%I:%M:%S %p')}\n"
+                          f"**{local_time.strftime('%A, %B %d, %Y')}**",
                     inline=False
                 )
+                
+                # Timezone info in a clean format
                 embed.add_field(
-                    name="📍 UTC Offset",
-                    value=f"**{formatted_offset}** ({tz_name})",
-                    inline=True
+                    name="🌐 Your Timezone",
+                    value=f"**{timezone_display}**\n"
+                          f"UTC {formatted_offset} ({tz_name})",
+                    inline=False
                 )
                 
-                # Add day of week and week number
+                # Additional useful info
                 day_name = local_time.strftime('%A')
                 week_number = local_time.isocalendar()[1]
                 embed.add_field(
-                    name="📆 Day Info",
-                    value=f"**{day_name}** (Week {week_number})",
+                    name="📅 Additional Info",
+                    value=f"Week {week_number} of the year\n"
+                          f"Day {local_time.timetuple().tm_yday} of {local_time.year}",
                     inline=True
                 )
                 
-                # Add Discord timestamp for easy copying
+                # Discord timestamp for sharing
                 timestamp = int(local_time.timestamp())
                 embed.add_field(
-                    name="🔗 Discord Timestamp",
-                    value=f"`<t:{timestamp}:F>`\n<t:{timestamp}:F>",
-                    inline=False
+                    name="🔗 Share This Time",
+                    value=f"`<t:{timestamp}:F>`",
+                    inline=True
                 )
                 
-                embed.set_footer(text="Use /set-timezone to change your timezone")
+                embed.set_footer(text="💡 Use /set-timezone to change • This message is only visible to you")
                 
             except pytz.exceptions.UnknownTimeZoneError:
                 # Handle invalid timezone in database
-                embed = EmbedBuilder.error_embed(
-                    "❌ Invalid Timezone",
-                    f"Your saved timezone '{user_tz_name}' is invalid.\n"
-                    f"Please set a new timezone using `/set-timezone`."
+                embed = discord.Embed(
+                    title="❌ Timezone Error",
+                    description=f"Your saved timezone '{user_tz_name}' is no longer valid.",
+                    color=Config.COLORS['error']
+                )
+                embed.add_field(
+                    name="What to do",
+                    value="Please set a new timezone using `/set-timezone`\n"
+                          "Use `/list-timezones` to see available options.",
+                    inline=False
                 )
                 # Remove invalid timezone from database
                 del self.timezone_db[user_id]
